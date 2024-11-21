@@ -24,6 +24,7 @@ import {
 import { _Mathfield } from './mathfield-private';
 import { ModeEditor } from './mode-editor';
 import type { AtomJson } from 'core/types';
+import { MacroAtom, reloadParentsMacros } from 'atoms/macro';
 
 export class MathModeEditor extends ModeEditor {
   constructor() {
@@ -366,6 +367,7 @@ export class MathModeEditor extends ModeEditor {
     } else if (options.selectionMode === 'item')
       model.setSelection(model.anchor, model.offsetOf(lastNewAtom));
 
+    reloadParentsMacros(parent);
     model.contentDidChange({ data, inputType: 'insertText' });
 
     model.silenceNotifications = silenceNotifications;
