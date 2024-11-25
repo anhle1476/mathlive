@@ -20,7 +20,7 @@ export class AccentAtom extends Atom {
     else this.svgAccent = options?.svgAccent;
 
     this.skipBoundary = true;
-    this.captureSelection = true;
+    // this.captureSelection = true;
     // this.limits = 'accent'; // This will suppress the regular
     // supsub attachment and will delegate
     // it to the decomposeAccent
