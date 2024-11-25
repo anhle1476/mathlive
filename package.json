@@ -53,9 +53,9 @@
   "bugs": "https://github.com/arnog/mathlive/issues/",
   "scripts": {
     "doc": "bash ./scripts/update-docs.sh",
-    "build": "bash ./scripts/build.sh",
+    "build": "bash ./scripts/build.sh production",
     "clean": "bash ./scripts/clean.sh",
-    "dist": "bash ./scripts/build.sh production; bash ./scripts/test.sh",
+    "dist": "node _dist-copy.js",
     "lint": "eslint --fix src/; prettier -w src/",
     "prepare": "bash ./scripts/build.sh production",
     "start": "bash ./scripts/start.sh",
@@ -128,7 +128,8 @@
   },
   "prettier": "@cortex-js/prettier-config",
   "dependencies": {
-    "@cortex-js/compute-engine": "0.28.0"
+    "@cortex-js/compute-engine": "0.28.0",
+    "vinyl-fs": "^4.0.0"
   },
   "devDependencies": {
     "@arnog/esbuild-plugin-less": "^1.1.0",
