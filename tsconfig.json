@@ -48,6 +48,7 @@
     "docs",
     "tutorials",
     "**/*.config.js",
-    "playwright.config.ts"
+    "playwright.config.ts",
+    "_dist-copy.js"
   ]
 }

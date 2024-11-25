@@ -1,0 +1,11 @@
+{
+    "name": "lib-mathlive",
+    "version": "0.0.1",
+    "sideEffects": false,
+    "browser": "./mathlive.min.js",
+    "module": "./mathlive.min.mjs",
+    "typings": "./types/mathlive.d.ts",
+    "dependencies": {
+        "tslib": "^2.3.0"
+    }
+  }
