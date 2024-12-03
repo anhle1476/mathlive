@@ -1,6 +1,6 @@
 {
   "name": "mathlive",
-  "version": "0.101.2",
+  "version": "0.102.0",
   "description": "A web component for math input",
   "license": "MIT",
   "funding": {
@@ -46,8 +46,8 @@
     "./static.css": "./dist/mathlive-static.css",
     "./fonts/*": "./dist/fonts/*",
     "./sounds/*": "./dist/sounds/*",
-    "./fonts/": "./dist/fonts/*",
-    "./sounds/": "./dist/sounds/*"
+    "./fonts/": "./dist/fonts/",
+    "./sounds/": "./dist/sounds/"
   },
   "repository": {
     "type": "git",

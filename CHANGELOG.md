@@ -1,3 +1,32 @@
+## [Unreleased]
+
+### Issues Resolved
+
+- **#2530** The AsciiMath `1/2` is now parsed as `\frac{1}{2}`
+
+## 0.102.0 _2024-11-29_
+
+### Issues Resolved
+
+- **#2550** The subpath exports in the main package.json have been updated to
+  comply with Node.js's subpath patterns, which utilize "direct static matching
+  and replacement.
+
+### Improvements
+
+- **#2554** **Option for sticky virtual keyboard variant panel**
+
+  When long pressing a key on the virtual keyboard, a variant panel is displayed
+  that offers alternatives (variants) for that key. The panel is only displayed
+  while your finger is pressing the key (like a smartphone keyboard). This new
+  options allows the variant panel to remain displayed even if you lift your
+  finger from the screen.
+
+  Add the `stickyVariantPanel` property to a virtual keyboard keycap definition
+  to make the variant panel sticky.
+
+  See `./examples/sticky-variant-panel/` for an example.
+
 ## 0.101.2 _2024-11-15_
 
 ### Issues Resolved
@@ -8,6 +37,7 @@
 - **#2545** (?) Use `\rightarrow` instead of `\rarr` in the virtual keyboard.
 - **#2543** The `MathfieldElement.fractionNavigationOrder` was not respected
   when navigating in a fraction with the arrow keys.
+- **#2251** Fixed the serialization of `\displaylines{}`
 
 ## 0.101.1 _2024-10-15_
 
