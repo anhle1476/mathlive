@@ -97,61 +97,61 @@ echo -e "$LINECLEAR$BASENAME$CHECK${EMPH}${BUILD}${RESET}${DIM} build done${RESE
 
 
 
-if [ "$BUILD" = "production" ]; then
-    #
-    # Update the documentation
-    #
-
-    bash ./scripts/update-docs.sh
-
-    #
-    # Stamp the SDK version number
-    #
-
-    # Note on the `sed` command:
-    # On Linux, the -i switch can be used without an extension argument
-    # On macOS, the -i switch must be followed by an extension argument (which can be empty)
-    # On Windows, the argument of the -i switch is optional, but if present it must follow it immediately without a space in between
-    sedi () {
-        sed --version >/dev/null 2>&1 && sed -i -- "$@" || sed -i "" "$@"
-    }
-    export -f sedi
-
-
-    export SDK_VERSION=$(cat package.json \
-    | grep version \
-    | head -1 \
-    | awk -F: '{ print $2 }' \
-    | sed 's/[",]//g' \
-    | tr -d '[[:space:]]')
-
-    printf "$BASENAME${DOT}Stamping output files"
-
-    # Substitute in the api.md file
-    sedi "s/{{SDK_VERSION}}/$SDK_VERSION/" ./src/api.md
-
-
-    find ./dist -type f -name '*.css' -exec bash -c 'sedi "1s/^/\/\* $SDK_VERSION \*\//" {}' \;
-    find ./dist -type f \( -name '*.mjs' -o -name '*.js' \) -exec bash -c 'sedi s/{{SDK_VERSION}}/$SDK_VERSION/g {}' \;
-    find ./dist -type f -name '*.d.ts' -exec bash -c 'sedi "1s/^/\/\* $SDK_VERSION \*\/$(printf '"'"'\r'"'"')/" {}' \;
-    find ./dist -type f -name '*.d.ts' -exec bash -c 'sedi "s/{{SDK_VERSION}}/$SDK_VERSION/" {}' \;
-
-    # "Correct" the path to compute engine emitted by tsc
-    find ./dist -type f -name '*.d.ts' -exec bash -c 'sedi "s/types=\"public/types=\"\./" {}' \;
-
-
-
-
-    echo -e "$LINECLEAR$BASENAME$CHECK${DIM}Output files stamped${RESET}"
-
-
-    # Copy root files (README, LICENSE, etc.)
-    printf "$BASENAME${DOT}Copying root files"
-    cp README.md dist/
-    cp LICENSE.txt dist/
-    cp CHANGELOG.md dist/
-    cp SECURITY.md dist/
-
-    node ./scripts/make-publish-package.json.js
-
-fi
+# if [ "$BUILD" = "production" ]; then
+#     #
+#     # Update the documentation
+#     #
+# 
+#     bash ./scripts/update-docs.sh
+# 
+#     #
+#     # Stamp the SDK version number
+#     #
+# 
+#     # Note on the `sed` command:
+#     # On Linux, the -i switch can be used without an extension argument
+#     # On macOS, the -i switch must be followed by an extension argument (which can be empty)
+#     # On Windows, the argument of the -i switch is optional, but if present it must follow it immediately without a space in between
+#     sedi () {
+#         sed --version >/dev/null 2>&1 && sed -i -- "$@" || sed -i "" "$@"
+#     }
+#     export -f sedi
+# 
+# 
+#     export SDK_VERSION=$(cat package.json \
+#     | grep version \
+#     | head -1 \
+#     | awk -F: '{ print $2 }' \
+#     | sed 's/[",]//g' \
+#     | tr -d '[[:space:]]')
+# 
+#     printf "$BASENAME${DOT}Stamping output files"
+# 
+#     # Substitute in the api.md file
+#     sedi "s/{{SDK_VERSION}}/$SDK_VERSION/" ./src/api.md
+# 
+# 
+#     find ./dist -type f -name '*.css' -exec bash -c 'sedi "1s/^/\/\* $SDK_VERSION \*\//" {}' \;
+#     find ./dist -type f \( -name '*.mjs' -o -name '*.js' \) -exec bash -c 'sedi s/{{SDK_VERSION}}/$SDK_VERSION/g {}' \;
+#     find ./dist -type f -name '*.d.ts' -exec bash -c 'sedi "1s/^/\/\* $SDK_VERSION \*\/$(printf '"'"'\r'"'"')/" {}' \;
+#     find ./dist -type f -name '*.d.ts' -exec bash -c 'sedi "s/{{SDK_VERSION}}/$SDK_VERSION/" {}' \;
+# 
+#     # "Correct" the path to compute engine emitted by tsc
+#     find ./dist -type f -name '*.d.ts' -exec bash -c 'sedi "s/types=\"public/types=\"\./" {}' \;
+# 
+# 
+# 
+# 
+#     echo -e "$LINECLEAR$BASENAME$CHECK${DIM}Output files stamped${RESET}"
+# 
+# 
+#     # Copy root files (README, LICENSE, etc.)
+#     printf "$BASENAME${DOT}Copying root files"
+#     cp README.md dist/
+#     cp LICENSE.txt dist/
+#     cp CHANGELOG.md dist/
+#     cp SECURITY.md dist/
+# 
+#     node ./scripts/make-publish-package.json.js
+# 
+# fi

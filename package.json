@@ -129,6 +129,7 @@
   "prettier": "@cortex-js/prettier-config",
   "dependencies": {
     "@cortex-js/compute-engine": "0.28.0",
+    "mathlive": "file:",
     "vinyl-fs": "^4.0.0"
   },
   "devDependencies": {
