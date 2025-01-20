@@ -7,6 +7,7 @@ import { range } from './selection-utils';
 import { MathfieldElement } from 'public/mathfield-element';
 import type { Branch } from 'core/types';
 import type { Range } from 'public/core-types';
+import { reloadParentsMacros } from 'atoms/macro';
 import { ArrayAtom } from 'atoms/array';
 
 // import {
@@ -154,6 +155,7 @@ function onDelete(
     }
 
     model.position = pos;
+    reloadParentsMacros(parent);
     return true;
   }
 
@@ -194,6 +196,7 @@ function onDelete(
       }
     }
 
+    reloadParentsMacros(parent);
     return true;
   }
 
@@ -209,6 +212,7 @@ function onDelete(
     parent.addChildrenAfter(atom.removeBranch('body'), atom);
     parent.removeChild(atom);
     model.position = model.offsetOf(pos);
+    reloadParentsMacros(parent);
     return true;
   }
 
@@ -230,6 +234,7 @@ function onDelete(
       model.position = model.offsetOf(
         direction === 'forward' ? atom.firstChild : atom.lastChild
       );
+      reloadParentsMacros(parent);
       return true;
     }
 
@@ -253,6 +258,7 @@ function onDelete(
       model.position = model.offsetOf(
         first.length > 0 ? first[first.length - 1] : second[0]
       );
+      reloadParentsMacros(parent);
       return true;
     }
 
@@ -260,6 +266,7 @@ function onDelete(
       model.position = model.offsetOf(atom.leftSibling);
     else model.position = model.offsetOf(atom);
 
+    reloadParentsMacros(parent);
     return true;
   }
 
@@ -277,6 +284,7 @@ function onDelete(
             : (atom.subscript?.[0].lastSibling ??
               atom.superscript?.[0].lastSibling);
         if (pos) model.position = model.offsetOf(pos);
+        reloadParentsMacros(parent);
         return true;
       }
 
@@ -291,6 +299,7 @@ function onDelete(
           : Math.max(0, model.offsetOf(atom) - 1);
       atom.parent!.removeChild(atom);
       model.position = pos;
+      reloadParentsMacros(parent);
       return true;
     }
 
@@ -328,6 +337,7 @@ function onDelete(
       }
     }
 
+    reloadParentsMacros(parent);
     return true;
   }
 
@@ -341,10 +351,12 @@ function onDelete(
       parent.parent!.removeChild(parent);
       model.announce('delete', undefined, [parent]);
       model.position = pos;
+      reloadParentsMacros(parent);
       return true;
     }
     model.announce('delete', undefined, [atom]);
     model.position = pos;
+    reloadParentsMacros(parent);
     return true;
   }
 
@@ -359,6 +371,7 @@ function onDelete(
     parent.parent!.removeChild(parent);
     model.announce('delete', undefined, [parent]);
     model.position = pos;
+    reloadParentsMacros(parent);
     return true;
   }
 
@@ -398,8 +411,11 @@ export function deleteBackward(model: _Model): boolean {
       }
 
       model.position = model.offsetOf(target.leftSibling);
-      target.parent!.removeChild(target);
+      const parent = target.parent;
+      parent!.removeChild(target);
       model.announce('delete', undefined, [target]);
+
+      reloadParentsMacros(parent);
     }
   );
 }
@@ -443,13 +459,15 @@ export function deleteForward(model: _Model): boolean {
         return;
       }
 
-      target.parent!.removeChild(target);
+      const parent = target.parent;
+      parent!.removeChild(target);
       let sibling = model.at(model.position)?.rightSibling;
       while (sibling?.type === 'subsup') {
         sibling.parent!.removeChild(sibling);
         sibling = model.at(model.position)?.rightSibling;
       }
 
+      reloadParentsMacros(parent);
       model.announce('delete', undefined, [target]);
     }
   );
@@ -563,7 +581,14 @@ export function deleteRange(
   }
   return model.deferNotifications(
     { content: true, selection: true, type },
-    () => model.deleteAtoms(range)
+    () => {
+      const atoms = model.getAtoms(range);
+      const parents = new Set<Atom>(atoms.map((a) => a.parent!));
+
+      model.deleteAtoms(range);
+
+      for (const parent of parents) reloadParentsMacros(parent);
+    }
   );
 }
 

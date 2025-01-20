@@ -1863,6 +1863,7 @@ export class Parser {
         mathstyle: this.parsingContext.mathstyle,
         style: this.parsingContext.style,
       }),
+      def: def.def,
     });
   }
 
